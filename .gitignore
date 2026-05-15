@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# FastAPI
+.env
+.env.local
+*.db
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Project
+.claude/
+.git/
