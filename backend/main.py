@@ -12,11 +12,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Enable CORS for frontend
+# CORS — allow all origins in production (restrict to your deployed frontend URL once known)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,  # Must be False when allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(router)
 
 @app.get("/")
+@app.head("/")
 def read_root():
     return {"message": "ResQRoute API"}
 
@@ -33,4 +34,5 @@ def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
