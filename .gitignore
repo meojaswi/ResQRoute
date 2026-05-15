@@ -13,9 +13,9 @@ dist/
 build/
 
 # FastAPI
-.env
-.env.local
-*.db
+backend/.env
+backend/.env.local
+backend/*.db
 
 # Node
 node_modules/
