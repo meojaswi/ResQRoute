@@ -8,8 +8,10 @@ class Zone(BaseModel):
     longitude: float
     elevation_m: float = 10.0
     population_density: int = 5000
-    risk_level: Optional[str] = "low"  # low, medium, high
-    disaster_types: Optional[List[str]] = []
+    building_age_years: int = 20
+    infrastructure_type: str = "residential"
+    vegetation_density: str = "low"
+    has_medical_center: bool = False
 
 class Road(BaseModel):
     id: str
@@ -17,6 +19,9 @@ class Road(BaseModel):
     to_zone: str
     distance: float
     risk_score: Optional[float] = 0.0
+    live_traffic_congestion: float = 0.0  # 0.0 to 1.0
+    road_capacity: int = 2  # 1 = alley, 4 = highway
+    is_bridge_or_tunnel: bool = False
 
 class City(BaseModel):
     name: str

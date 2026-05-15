@@ -22,14 +22,25 @@ def get_risk_assessment(disaster_type: str, intensity: float, zones: list) -> di
             zone_name = z.get('name', zone_id)
             elev = z.get('elevation_m', 10.0)
             pop = z.get('population_density', 5000)
+            age = z.get('building_age_years', 20)
+            infra = z.get('infrastructure_type', 'residential')
+            veg = z.get('vegetation_density', 'low')
+            med = z.get('has_medical_center', False)
         else:
             zone_id = getattr(z, 'id')
             zone_name = getattr(z, 'name', zone_id)
             elev = getattr(z, 'elevation_m', 10.0)
             pop = getattr(z, 'population_density', 5000)
+            age = getattr(z, 'building_age_years', 20)
+            infra = getattr(z, 'infrastructure_type', 'residential')
+            veg = getattr(z, 'vegetation_density', 'low')
+            med = getattr(z, 'has_medical_center', False)
             
         name_to_id[zone_name] = zone_id
-        zone_details.append(f"- {zone_name} (Elevation: {elev}m, Pop. Density: {pop} ppl/sqmi)")
+        med_str = "Has Hospital" if med else "No Hospital"
+        zone_details.append(
+            f"- {zone_name} (Elev: {elev}m, Pop: {pop}, Age: {age}yrs, Type: {infra}, Veg: {veg}, {med_str})"
+        )
 
     prompt = f"""You are an evacuation planning AI. Given a {disaster_type} disaster at intensity {intensity}/10,
     assess the risk level (0.0-1.0) for each zone. Return a JSON object with zone names as keys and risk scores as values.
@@ -39,8 +50,10 @@ def get_risk_assessment(disaster_type: str, intensity: float, zones: list) -> di
 
     Critical Reasoning Instructions:
     - For FLOODS: Strictly penalize zones with low elevation (e.g. < 5m are extremely dangerous, > 50m are very safe).
-    - For FIRES & EARTHQUAKES: Heavily penalize zones with high population density due to stampedes and cascading structural collapse.
-    - Proximity: Consider how the disaster type interacts with the raw geographic data.
+    - For FIRES: Heavily penalize zones with 'high' vegetation density and high population density.
+    - For EARTHQUAKES: Heavily penalize zones with older building ages (Age > 50yrs) and high population density due to structural collapse.
+    - MEDICAL CENTERS: If a zone has a hospital, significantly REDUCE its risk score (make it safer) so evacuees are routed toward medical care.
+    - INFRASTRUCTURE: Industrial zones carry high risk of secondary hazards (explosions/chemicals) during fires and earthquakes.
 
     Return ONLY valid JSON, no other text."""
 

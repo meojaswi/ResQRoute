@@ -9,41 +9,41 @@ router = APIRouter(prefix="/api", tags=["routes"])
 mock_city = City(
     name="Metro City",
     zones=[
-        {"id": "z1", "name": "Downtown", "latitude": 40.7128, "longitude": -74.0060, "elevation_m": 8.5, "population_density": 35000},
-        {"id": "z2", "name": "Coastal Harbor", "latitude": 40.6895, "longitude": -74.0444, "elevation_m": 1.5, "population_density": 8000},
-        {"id": "z3", "name": "Financial District", "latitude": 40.7075, "longitude": -74.0113, "elevation_m": 5.0, "population_density": 45000},
-        {"id": "z4", "name": "Midtown", "latitude": 40.7549, "longitude": -73.9840, "elevation_m": 15.0, "population_density": 50000},
-        {"id": "z5", "name": "Central Park", "latitude": 40.7812, "longitude": -73.9665, "elevation_m": 35.0, "population_density": 500},
-        {"id": "z6", "name": "Westside", "latitude": 40.7850, "longitude": -73.9780, "elevation_m": 20.0, "population_density": 28000},
-        {"id": "z7", "name": "Eastside Industrial", "latitude": 40.7600, "longitude": -73.9500, "elevation_m": 8.0, "population_density": 3000},
-        {"id": "z8", "name": "Northern Suburbs", "latitude": 40.8100, "longitude": -73.9400, "elevation_m": 65.0, "population_density": 6000},
-        {"id": "z9", "name": "University Campus", "latitude": 40.7300, "longitude": -73.9950, "elevation_m": 12.0, "population_density": 22000},
-        {"id": "z10", "name": "The Heights", "latitude": 40.8250, "longitude": -73.9450, "elevation_m": 145.0, "population_density": 12000},
+        {"id": "z1", "name": "Downtown", "latitude": 40.7128, "longitude": -74.0060, "elevation_m": 8.5, "population_density": 35000, "building_age_years": 85, "infrastructure_type": "commercial", "vegetation_density": "low", "has_medical_center": False},
+        {"id": "z2", "name": "Coastal Harbor", "latitude": 40.6895, "longitude": -74.0444, "elevation_m": 1.5, "population_density": 8000, "building_age_years": 40, "infrastructure_type": "industrial", "vegetation_density": "low", "has_medical_center": False},
+        {"id": "z3", "name": "Financial District", "latitude": 40.7075, "longitude": -74.0113, "elevation_m": 5.0, "population_density": 45000, "building_age_years": 30, "infrastructure_type": "commercial", "vegetation_density": "low", "has_medical_center": True},
+        {"id": "z4", "name": "Midtown", "latitude": 40.7549, "longitude": -73.9840, "elevation_m": 15.0, "population_density": 50000, "building_age_years": 50, "infrastructure_type": "commercial", "vegetation_density": "low", "has_medical_center": True},
+        {"id": "z5", "name": "Central Park", "latitude": 40.7812, "longitude": -73.9665, "elevation_m": 35.0, "population_density": 500, "building_age_years": 10, "infrastructure_type": "park", "vegetation_density": "high", "has_medical_center": False},
+        {"id": "z6", "name": "Westside", "latitude": 40.7850, "longitude": -73.9780, "elevation_m": 20.0, "population_density": 28000, "building_age_years": 60, "infrastructure_type": "residential", "vegetation_density": "medium", "has_medical_center": False},
+        {"id": "z7", "name": "Eastside Industrial", "latitude": 40.7600, "longitude": -73.9500, "elevation_m": 8.0, "population_density": 3000, "building_age_years": 70, "infrastructure_type": "industrial", "vegetation_density": "low", "has_medical_center": False},
+        {"id": "z8", "name": "Northern Suburbs", "latitude": 40.8100, "longitude": -73.9400, "elevation_m": 65.0, "population_density": 6000, "building_age_years": 15, "infrastructure_type": "residential", "vegetation_density": "high", "has_medical_center": True},
+        {"id": "z9", "name": "University Campus", "latitude": 40.7300, "longitude": -73.9950, "elevation_m": 12.0, "population_density": 22000, "building_age_years": 25, "infrastructure_type": "residential", "vegetation_density": "medium", "has_medical_center": True},
+        {"id": "z10", "name": "The Heights", "latitude": 40.8250, "longitude": -73.9450, "elevation_m": 145.0, "population_density": 12000, "building_age_years": 35, "infrastructure_type": "residential", "vegetation_density": "medium", "has_medical_center": False},
     ],
     roads=[
         # Southern cluster
-        {"id": "r1", "from_zone": "z1", "to_zone": "z3", "distance": 1.2, "risk_score": 0.0},
-        {"id": "r2", "from_zone": "z1", "to_zone": "z9", "distance": 2.5, "risk_score": 0.0},
-        {"id": "r3", "from_zone": "z2", "to_zone": "z3", "distance": 3.0, "risk_score": 0.0},
-        {"id": "r4", "from_zone": "z2", "to_zone": "z6", "distance": 8.5, "risk_score": 0.0}, # Coastal highway
+        {"id": "r1", "from_zone": "z1", "to_zone": "z3", "distance": 1.2, "live_traffic_congestion": 0.8, "road_capacity": 3, "is_bridge_or_tunnel": False},
+        {"id": "r2", "from_zone": "z1", "to_zone": "z9", "distance": 2.5, "live_traffic_congestion": 0.5, "road_capacity": 2, "is_bridge_or_tunnel": False},
+        {"id": "r3", "from_zone": "z2", "to_zone": "z3", "distance": 3.0, "live_traffic_congestion": 0.3, "road_capacity": 2, "is_bridge_or_tunnel": True}, # Harbor bridge
+        {"id": "r4", "from_zone": "z2", "to_zone": "z6", "distance": 8.5, "live_traffic_congestion": 0.2, "road_capacity": 4, "is_bridge_or_tunnel": False}, # Coastal highway
         
         # Mid cluster
-        {"id": "r5", "from_zone": "z3", "to_zone": "z4", "distance": 4.0, "risk_score": 0.0},
-        {"id": "r6", "from_zone": "z3", "to_zone": "z9", "distance": 3.5, "risk_score": 0.0},
-        {"id": "r7", "from_zone": "z9", "to_zone": "z4", "distance": 2.8, "risk_score": 0.0},
-        {"id": "r8", "from_zone": "z9", "to_zone": "z7", "distance": 5.0, "risk_score": 0.0},
+        {"id": "r5", "from_zone": "z3", "to_zone": "z4", "distance": 4.0, "live_traffic_congestion": 0.9, "road_capacity": 4, "is_bridge_or_tunnel": False},
+        {"id": "r6", "from_zone": "z3", "to_zone": "z9", "distance": 3.5, "live_traffic_congestion": 0.6, "road_capacity": 2, "is_bridge_or_tunnel": False},
+        {"id": "r7", "from_zone": "z9", "to_zone": "z4", "distance": 2.8, "live_traffic_congestion": 0.7, "road_capacity": 3, "is_bridge_or_tunnel": False},
+        {"id": "r8", "from_zone": "z9", "to_zone": "z7", "distance": 5.0, "live_traffic_congestion": 0.4, "road_capacity": 2, "is_bridge_or_tunnel": True}, # Tunnel to industrial
         
         # Northern cluster
-        {"id": "r9", "from_zone": "z4", "to_zone": "z5", "distance": 2.5, "risk_score": 0.0},
-        {"id": "r10", "from_zone": "z4", "to_zone": "z6", "distance": 3.0, "risk_score": 0.0},
-        {"id": "r11", "from_zone": "z4", "to_zone": "z7", "distance": 3.2, "risk_score": 0.0},
-        {"id": "r12", "from_zone": "z5", "to_zone": "z8", "distance": 4.5, "risk_score": 0.0},
-        {"id": "r13", "from_zone": "z5", "to_zone": "z10", "distance": 6.0, "risk_score": 0.0},
-        {"id": "r14", "from_zone": "z6", "to_zone": "z8", "distance": 3.8, "risk_score": 0.0},
-        {"id": "r15", "from_zone": "z7", "to_zone": "z8", "distance": 5.2, "risk_score": 0.0},
+        {"id": "r9", "from_zone": "z4", "to_zone": "z5", "distance": 2.5, "live_traffic_congestion": 0.8, "road_capacity": 3, "is_bridge_or_tunnel": False},
+        {"id": "r10", "from_zone": "z4", "to_zone": "z6", "distance": 3.0, "live_traffic_congestion": 0.5, "road_capacity": 3, "is_bridge_or_tunnel": False},
+        {"id": "r11", "from_zone": "z4", "to_zone": "z7", "distance": 3.2, "live_traffic_congestion": 0.7, "road_capacity": 2, "is_bridge_or_tunnel": False},
+        {"id": "r12", "from_zone": "z5", "to_zone": "z8", "distance": 4.5, "live_traffic_congestion": 0.2, "road_capacity": 2, "is_bridge_or_tunnel": False},
+        {"id": "r13", "from_zone": "z5", "to_zone": "z10", "distance": 6.0, "live_traffic_congestion": 0.1, "road_capacity": 1, "is_bridge_or_tunnel": False},
+        {"id": "r14", "from_zone": "z6", "to_zone": "z8", "distance": 3.8, "live_traffic_congestion": 0.3, "road_capacity": 3, "is_bridge_or_tunnel": False},
+        {"id": "r15", "from_zone": "z7", "to_zone": "z8", "distance": 5.2, "live_traffic_congestion": 0.2, "road_capacity": 2, "is_bridge_or_tunnel": False},
         
         # Far North
-        {"id": "r16", "from_zone": "z8", "to_zone": "z10", "distance": 2.0, "risk_score": 0.0},
+        {"id": "r16", "from_zone": "z8", "to_zone": "z10", "distance": 2.0, "live_traffic_congestion": 0.1, "road_capacity": 2, "is_bridge_or_tunnel": False},
     ]
 )
 
@@ -70,7 +70,7 @@ def plan_evacuation_route(request: DisasterInput) -> RouteResponse:
         city_graph = CityGraph()
         city_graph.add_zones(mock_city.zones)
         city_graph.add_roads(mock_city.roads)
-        city_graph.update_edge_weights(risk_scores)
+        city_graph.update_edge_weights(risk_scores, request.disaster_type)
 
         destination = request.destination_location or "z4"
 
