@@ -368,9 +368,7 @@ body {
   letter-spacing: -1px;
 }
 
-.explanation-column {
-  /* No specific overrides needed, inherits card styling */
-}
+
 
 .explanation {
   margin: 0;
