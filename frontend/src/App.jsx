@@ -42,13 +42,14 @@ function App() {
   const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [backendWarming, setBackendWarming] = useState(false);
 
   const handlePlanRoute = async (disasterData) => {
     setLoading(true);
     setError(null);
     setRoute(null);
     try {
-      const response = await fetch('http://localhost:8000/api/plan-route', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/plan-route`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(disasterData),
@@ -66,13 +67,23 @@ function App() {
     setLoading(false);
   };
 
-  const fetchCity = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/city');
-      const data = await response.json();
-      setCity(data);
-    } catch (error) {
-      console.error('Failed to fetch city:', error);
+  const fetchCity = async (retries = 5, delay = 3000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        if (i > 0) setBackendWarming(true);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/city`);
+        const data = await response.json();
+        setCity(data);
+        setBackendWarming(false);
+        return;
+      } catch (err) {
+        if (i < retries - 1) {
+          await new Promise(res => setTimeout(res, delay));
+        } else {
+          setBackendWarming(false);
+          console.error('Backend unreachable after retries:', err);
+        }
+      }
     }
   };
 
@@ -84,6 +95,11 @@ function App() {
           <p>AI-Powered Evacuation Route Planner</p>
         </header>
 
+        {backendWarming && (
+          <div className="error-banner" style={{ background: 'rgba(255,170,0,0.1)', borderColor: 'var(--warning-color)', color: 'var(--warning-color)' }}>
+            ⏳ Backend is warming up on Render's free tier — this takes ~30s on first visit. Please wait...
+          </div>
+        )}
         {error && (
           <div className="error-banner">
             ⚠️ {error}
