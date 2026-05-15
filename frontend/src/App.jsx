@@ -49,7 +49,8 @@ function App() {
     setError(null);
     setRoute(null);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/plan-route`, {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${apiUrl}/api/plan-route`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(disasterData),
@@ -71,7 +72,8 @@ function App() {
     for (let i = 0; i < retries; i++) {
       try {
         if (i > 0) setBackendWarming(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/city`);
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const response = await fetch(`${apiUrl}/api/city`);
         const data = await response.json();
         setCity(data);
         setBackendWarming(false);
